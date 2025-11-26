@@ -1,7 +1,11 @@
-# BT4BR_MaksymilianDutkiewicz_Assignment5
+# Summary about Git
+
+## Author and Date:
 
 Name: Maksymilian Dutkiewicz
+
 Creation_Date: 20.11.2025
-Course: Basic Toolkit for Bioinformatics Reasearch
+
+## Setting up Git
 
 
