@@ -1,0 +1,56 @@
+---
+title: "BT4BR_MaksymilianDutkiewicz_Assignment7"
+author: "Maksymilian Dutkiewicz"
+format: html
+editor: visual
+---
+
+**We start by loading tidyr and dplyr packages, which functionalities we will use in other chunks of the code**
+
+```{r}
+#| message: false
+library(tidyr)
+library(dplyr)
+```
+
+**This chunk takes built-in dataset iris and changes it's format from wide to long and then assigns it to iris_table variable, which now consists of 3 columns: Species, Trait and Size**
+
+```{r}
+#Task1
+iris_table <- iris %>% 
+  pivot_longer(
+    cols = c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"),
+    names_to = "Trait", 
+    values_to = "Size")
+```
+
+**Next chunk calculates the mean value of each trait for each species and stores those means in new dataset mean_across_species**
+
+```{r}
+#Task2.1
+mean_across_species <- iris_table %>% 
+  group_by(Species, Trait) %>% 
+  summarize(mean_size = mean(Size), .groups = "drop")
+
+```
+
+**Similarly, we can find maximum values for each trait among each species or in this case for virginica and versicolor species, by running code below:**
+
+```{r}
+#Task2.2
+max_across_species <- iris_table %>% 
+  filter(Species %in% c("virginica", "versicolor")) %>% 
+  group_by(Species,Trait) %>% 
+  summarize(max_size = max(Size), .groups = "drop")
+```
+
+**Last chunk of code once again calculates the mean value of each trait for each species, but this time through use of mutate(), which doesn't change number of rows and allows us to calculate amount of observations above the mean trait values for each trait and each species by using filter(), summarize() and n() - essentially counting number of rows, which meet condition Size \> mean_size**
+
+```{r}
+#Task2.3
+observations_above_mean <- iris_table %>%
+  group_by(Species,Trait) %>% 
+  mutate(mean_size = mean(Size)) %>% 
+  filter(Size > mean_size) %>% 
+  summarize(obs_above_mean = n(), .groups = "drop")
+```
