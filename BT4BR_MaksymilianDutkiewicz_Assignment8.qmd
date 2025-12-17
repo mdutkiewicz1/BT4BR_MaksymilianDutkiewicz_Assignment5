@@ -1,0 +1,76 @@
+---
+title: "BT4BR_MaksymilianDutkiewicz_Assignment8"
+format: html
+editor: visual
+---
+
+## Short reminder:
+
+### Initial bad plot
+
+![](chart.png)
+
+### Why was it bad?
+
+**It's usually ill-advised to use pie charts, because humans aren't very good at comparing angles and surfaces. We can't precisely infer any exact values from this bar.**
+
+### Proposed fix
+
+**We'll use bar chart to show the same ratio of effectiveness between current and emerging biomarkers**
+
+### Disclaimer
+
+**Exact dataset with effectiveness measurements was not found. Instead plotdigitizer was used to find precise fractions.**
+
+## Creating new plot:
+
+### Loading data
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+plot_data <- read_csv("plot-data.csv")
+```
+
+### Initializing the plot
+
+```{r}
+p <-ggplot(data = plot_data, aes(x=category, y=value))
+```
+
+### Plotting the bar chart
+
+```{r}
+p <- p+geom_bar(stat = "identity", aes(fill=category)) #fills bars based on biomarker category
+
+p
+```
+
+### Adding labels
+
+```{r}
+p <- p+labs(title="Current and emerging biomarkers in pancreatic cancer",
+       subtitle="Effectiveness comparision*",
+       x="Biomarker category",
+       y="Potential for early detection",
+       caption="*based on sensitivity and specificity")
+p
+```
+
+### Improving aesthetics
+
+```{r}
+library(RColorBrewer)
+
+p <- p+theme_minimal(base_size = 13)+
+  scale_fill_brewer(palette = "Set1")
+p
+```
+
+### Removing redundant legend
+
+```{r}
+p <- p+guides(fill = "none")
+p
+```
